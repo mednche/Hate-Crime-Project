@@ -1,0 +1,4 @@
+# LIst files that shouldn't be included in the repository ghere
+
+# Windows file:
+Thumbs.db
