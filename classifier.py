@@ -16,20 +16,17 @@ import re
 import string
 import pickle
 import numpy as np
+import nltk
+nltk.download("stopwords")
 from nltk.corpus import stopwords
 from nltk import ngrams
-import tkinter
-from tkinter.filedialog import askdirectory
-import os
+#import os
+
+# prevent SettingWithCopyWarning messages from pandas
+pd.options.mode.chained_assignment = None
 
 # user to select working folder (containing all files)
-root = tkinter.Tk()
-folder = askdirectory()
-root.withdraw()
-
-
-os.chdir(folder)
-
+#directory_name = os.path.dirname(__file__)
 
 # open the classifier
 f = open('classifier.pickle', 'rb')
@@ -205,7 +202,7 @@ data_to_classify.to_csv("classified_Lancashire_town_tweets.csv")
 ## ###       COUNT TWEETS FOR EACH TOWNS OF LANCASHIRE          ### ### 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-towns = pd.read_csv('Towns_List.csv')
+towns = pd.read_csv('Towns_List.csv', sep = ";")
 
 # Initialise dataframe for counts of tweets per town
 df_out = pd.DataFrame() 
