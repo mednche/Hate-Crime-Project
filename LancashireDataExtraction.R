@@ -2,11 +2,15 @@
 
 # Built by Natacha Chenevoy, univeristy of Leeds - September 2017.
 # Works on R version 3.4.2
+# Works on Windows
 
 # Finds the tweets whose coordinates fall within Lancashire and save as a new csv file 
-# input: "Lancashire_geotag_tweets.csv" (the name is important)
-# input: shapefile of Lancashire Police Force Area boundary
-# output: "Lancashire_geotag_tweets_LA.csv"
+
+# input: "Lancashire_all_tweets.csv" (the name is important), the file comes from the Twitter API
+# input: "Shapefile/Lancashire". Shapefile of Lancashire Police Force Area boundary
+# input: "Towns_List.csv". List of towns in the UK, sorted by county
+
+# output: "Lancashire_geotag_tweets.csv"
 
 ###############################################################################
 
@@ -26,7 +30,7 @@ library(utils)
 # Import tweets within Lancashire boundary box - csv file #
 # -----------------------------------------------------------------
 
-setwd(choose.dir(caption = "Select folder called Twitter Analysis"))
+setwd(choose.dir(caption = "Select folder called Twitter Analysis")) # This step does not seem to work on Mac
 tweets = read.csv("Lancashire_all_tweets.csv", header = TRUE, encoding = "UTF-8") # data is a dataframe at this stage
 
 ###############################################################################

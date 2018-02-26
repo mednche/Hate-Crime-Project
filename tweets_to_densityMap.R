@@ -24,7 +24,7 @@ library(ggmap)
 #----------------------------------------------------------------------------------
 # Read filtered geotagged tweets from Lancashire
 #-------------------------------------------------------------------------------
-setwd(choose.dir(caption = "Select folder called Twitter Analysis"))
+setwd(choose.dir(caption = "Select folder called Twitter Analysis")) # this does not seem to work on Mac
 
 tweets = read.csv("classified_Lancashire_geotag_tweets.csv") # data is a dataframe at this stage
 
@@ -44,7 +44,6 @@ lanc <- readOGR("./Shapefile","Lancashire")
 # fortify: transform a spatial polygon object into a dataframe you can work on and plot on a map
 # Basically it shows the lat/long of the polygons on a dataframe
 lanc.points = fortify(lanc)
-
 
 #----------------------------------------------------------------------------------
 # Select only HATEFUL geotagged tweets 
