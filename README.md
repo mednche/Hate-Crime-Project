@@ -3,8 +3,7 @@
 </h1>
 <p align="center">
   Natacha Chenevoy, Carly Lightowlers and Nick Malleson
-</p>
-<p align="center">
+</p><p align="center">
   University of Leeds - February 2017 to February 2018
 </p>
 
