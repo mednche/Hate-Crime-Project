@@ -28,16 +28,36 @@ pd.options.mode.chained_assignment = None
 # user to select working folder (containing all files)
 #directory_name = os.path.dirname(__file__)
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+	
 # open the classifier
-f = open('classifier.pickle', 'rb')
-classifier1 = pickle.load(f)
-f.close()
-
+print("Fetching classifier")
+try:
+	f = open('classifier.pickle', 'rb')
+	classifier1 = pickle.load(f)
+	f.close()
+	print("done")
+except FileNotFoundError:
+	print(bcolors.FAIL + "Error: cannot retrieve file 'classifier.pickle'. Please make sure this file is in the same folder as this python script." + bcolors.ENDC )
+	
 # Open file containing list of important features for the classifier
-f = open('word_features.pickle', 'rb')
-word_features = pickle.load(f)
-f.close()
-
+print("Fetching word features")
+try:
+	f = open('word_features.pickle', 'rb')
+	word_features = pickle.load(f)
+	f.close()
+	print("done")
+except FileNotFoundError:
+	print(bcolors.FAIL + "Error: cannot retrieve file 'word_features.pickle'. Please make sure this file is in the same folder as this python script." + bcolors.ENDC)
+	
 
 # get list of english stopwords
 stops = set(stopwords.words('english'))
@@ -149,26 +169,34 @@ def extract_features(tweet):
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
 ## ###        CLASSIFICATION OF GEOTAGGED TWEETS        ### ### 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+print("Initialising classification of geottagged tweets...")
 
-data_to_classify = pd.read_csv('Lancashire_geotag_tweets.csv', encoding='ISO-8859-1')
+try:
+	data_to_classify = pd.read_csv('Lancashire_geotag_tweets.csv', encoding='ISO-8859-1')
 
-# replace '' by NA and then delete the row
-data_to_classify['text'].replace('', np.nan, inplace=True)
-data_to_classify.dropna(subset=['text'], inplace=True)
+	# replace '' by NA and then delete the row
+	data_to_classify['text'].replace('', np.nan, inplace=True)
+	data_to_classify.dropna(subset=['text'], inplace=True)
 
-# Add a new column with the result of the classification (0: non hateful, 1: hateful)   
-data_to_classify["label"] = data_to_classify["text"].apply(lambda x: classifier1.classify(extract_features(x)))
+	# Add a new column with the result of the classification (0: non hateful, 1: hateful)   
+	data_to_classify["label"] = data_to_classify["text"].apply(lambda x: classifier1.classify(extract_features(x)))
 
-# Add a new column with the probability of the classificaiton being correct
-data_to_classify["proba"] =  data_to_classify["text"].apply(lambda x: classifier1.prob_classify(extract_features(x)).prob(1))
+	# Add a new column with the probability of the classificaiton being correct
+	data_to_classify["proba"] =  data_to_classify["text"].apply(lambda x: classifier1.prob_classify(extract_features(x)).prob(1))
 
-# If the proba of correct classification for a tweet classified as 'hateful' 
-# is less than 0.72 (arbitrary), change it to non hateful
-data_to_classify["label"][(data_to_classify['label'] == 1) & ((data_to_classify['label'] == 1) & (data_to_classify['proba'] < 0.72))] = 0
- 
+	# If the proba of correct classification for a tweet classified as 'hateful' 
+	# is less than 0.72 (arbitrary), change it to non hateful
+	data_to_classify["label"][(data_to_classify['label'] == 1) & ((data_to_classify['label'] == 1) & (data_to_classify['proba'] < 0.72))] = 0
+	 
 
-data_to_classify.to_csv("classified_Lancashire_geotag_tweets.csv")
+	data_to_classify.to_csv("classified_Lancashire_geotag_tweets.csv")
+	
+	print("done")
+	
+	
 
+except FileNotFoundError:
+	print(bcolors.FAIL + "Error: cannot retrieve the file: 'Lancashire_geotag_tweets.csv'. Please make sure this file is in the same folder as this python script." + bcolors.ENDC)
 
 
 
@@ -176,57 +204,75 @@ data_to_classify.to_csv("classified_Lancashire_geotag_tweets.csv")
 ## ###     CLASSIFICATION OF TWEETS WITH HOME TOWN LOCATION     ### ### 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###  
 
-data_to_classify = pd.read_csv('Lancashire_towns_tweets.csv', encoding='ISO-8859-1')
+print("Initialising classification of tweets with home town location...")
 
-# replace '' by NA and then delete the row
-data_to_classify['text'].replace('', np.nan, inplace=True)
-data_to_classify.dropna(subset=['text'], inplace=True)
+try:
+	data_to_classify = pd.read_csv('Lancashire_towns_tweets.csv', encoding='ISO-8859-1')
 
-# Add a new column with the result of the classification (0: non hateful, 1: hateful)   
-data_to_classify["label"] = data_to_classify["text"].apply(lambda x: classifier1.classify(extract_features(x)))
+	# replace '' by NA and then delete the row
+	data_to_classify['text'].replace('', np.nan, inplace=True)
+	data_to_classify.dropna(subset=['text'], inplace=True)
 
-# Add a new column with the probability of the classificaiton being correct
-data_to_classify["proba"] =  data_to_classify["text"].apply(lambda x: classifier1.prob_classify(extract_features(x)).prob(1))
+	# Add a new column with the result of the classification (0: non hateful, 1: hateful)   
+	data_to_classify["label"] = data_to_classify["text"].apply(lambda x: classifier1.classify(extract_features(x)))
 
-# If the proba of correct classification for a tweet classified as 'hateful' 
-# is less than 0.72 (arbitrary), change it to non hateful
-data_to_classify["label"][(data_to_classify['label'] == 1) & ((data_to_classify['label'] == 1) & (data_to_classify['proba'] < 0.72))] = 0
+	# Add a new column with the probability of the classificaiton being correct
+	data_to_classify["proba"] =  data_to_classify["text"].apply(lambda x: classifier1.prob_classify(extract_features(x)).prob(1))
 
-                
-data_to_classify.to_csv("classified_Lancashire_town_tweets.csv")
+	# If the proba of correct classification for a tweet classified as 'hateful' 
+	# is less than 0.72 (arbitrary), change it to non hateful
+	data_to_classify["label"][(data_to_classify['label'] == 1) & ((data_to_classify['label'] == 1) & (data_to_classify['proba'] < 0.72))] = 0
+
+					
+	data_to_classify.to_csv("classified_Lancashire_town_tweets.csv")
+	
+	print("done")
+	
+	### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
+	## ###       COUNT TWEETS FOR EACH TOWNS OF LANCASHIRE          ### ### 
+	### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
+	print("Initialising count of tweets per towns in Lancashire...")
+
+	try:
+		towns = pd.read_csv('Towns_List.csv', sep = ";")
+
+		# Initialise dataframe for counts of tweets per town
+		df_out = pd.DataFrame() 
+
+		# for all towns in Lancashire
+		for town in towns["Town"][towns["County"] == "Lancashire"]:
+			
+			#town = "Lancaster"
+			# select tweets (with home town location) in this town
+			subset = data_to_classify[data_to_classify["town"] == town]
+
+			d = {'Total' : len(subset), 'True' : (subset["label"] == 1).sum(), 'False' : (subset["label"] == 0).sum(), 'town' : town}
+			series = pd.Series(d)
+			df_out = df_out.append(series, ignore_index = True) # add this series to the final dataframe
+			
+			# count the number of hateful tweets 
+			df_out["True"].sum()
+			
+		# Define column town as index
+		df_out = df_out.set_index(["town"])
+
+		df_out.to_csv("Lancashire_towns_count.csv")
+
+		print("done")
+
+	except FileNotFoundError:
+		print(bcolors.FAIL +"Error: cannot retrieve the file: 'Towns_List.csv'. Please make sure this file is in the same folder as this python script." + bcolors.ENDC)
+
+	
+except FileNotFoundError:
+	print(bcolors.FAIL + "Error: cannot retrieve the file: 'Lancashire_towns_tweets.csv'. Please make sure this file is in the same folder as this python script." + bcolors.ENDC)
 
 
 
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### 
-## ###       COUNT TWEETS FOR EACH TOWNS OF LANCASHIRE          ### ### 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-towns = pd.read_csv('Towns_List.csv', sep = ";")
-
-# Initialise dataframe for counts of tweets per town
-df_out = pd.DataFrame() 
-
-# for all towns in Lancashire
-for town in towns["Town"][towns["County"] == "Lancashire"]:
-    
-    #town = "Lancaster"
-    # select tweets (with home town location) in this town
-    subset = data_to_classify[data_to_classify["town"] == town]
-
-    d = {'Total' : len(subset), 'True' : (subset["label"] == 1).sum(), 'False' : (subset["label"] == 0).sum(), 'town' : town}
-    series = pd.Series(d)
-    df_out = df_out.append(series, ignore_index = True) # add this series to the final dataframe
-    
-    # count the number of hateful tweets 
-    df_out["True"].sum()
-    
-# Define column town as index
-df_out = df_out.set_index(["town"])
-
-df_out.to_csv("Lancashire_towns_count.csv")
 
 #%% 
-
 
 

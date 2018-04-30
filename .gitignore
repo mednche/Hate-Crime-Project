@@ -3,5 +3,7 @@
 # Windows file:
 Thumbs.db
 
-# testing:
-test.txt
+# data:
+Lancashire_all_tweets.csv
+Lancashire_geotag_tweets.csv
+Lancashire_towns_tweets.csv

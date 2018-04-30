@@ -14,15 +14,15 @@
 
 ###############################################################################
 
-install.packages("rgdal")
+# Install packages
+list.of.packages <- c("rgdal", "maptools", "ggplot2", "plyr", "utils" )
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
 library(rgdal)
-install.packages("maptools")
 library(maptools)
-install.packages("ggplot2")
 library(ggplot2) # for fortify function
-install.packages("plyr")
 library(plyr)
-install.packages("utils")
 library(utils)
 
 
@@ -30,7 +30,8 @@ library(utils)
 # Import tweets within Lancashire boundary box - csv file #
 # -----------------------------------------------------------------
 
-setwd(choose.dir(caption = "Select folder called Twitter Analysis")) # This step does not seem to work on Mac
+
+#setwd(choose.dir(caption = "Select project folder called Twitter Analysis")) # This step does not seem to work on Mac
 tweets = read.csv("Lancashire_all_tweets.csv", header = TRUE, encoding = "UTF-8") # data is a dataframe at this stage
 
 ###############################################################################
