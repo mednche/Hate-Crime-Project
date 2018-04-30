@@ -41,6 +41,7 @@ The algorithm developed in this project offers the potential to be used by Lanca
 <p align="center">
   <img src="https://github.com/mednche/Hate-Crime-Project/blob/master/Flowchart%20methods.png">
 </p>
+
 ### Notes
 Classifier.py needs to be run from a terminal so it automatically recognises the folder in which it is located.
 
