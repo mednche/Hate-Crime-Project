@@ -3,10 +3,9 @@
 </h1>
 <p align="center">
   Natacha Chenevoy, Carly Lightowlers and Nick Malleson
-  Univeristy of Leeds - Feb 2017 to Feb 2018
 </p>
 <p align="center">
-  Univeristy of Leeds
+  classified_Lancashire_geotag_tweets.csv
 </p>
 
 
