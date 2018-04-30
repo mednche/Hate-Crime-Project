@@ -3,7 +3,8 @@
 </h1>
 <p align="center">
   Natacha Chenevoy, Carly Lightowlers and Nick Malleson
-</p><p align="center">
+</p>
+<p align="center">
   University of Leeds - February 2017 to February 2018
 </p>
 
@@ -37,8 +38,9 @@ The algorithm developed in this project offers the potential to be used by Lanca
 
 
 ### Project flowchart
-![alt text](https://github.com/mednche/Hate-Crime-Project/blob/master/Flowchart%20methods.png)
-
+<p align="center">
+  <img src="https://github.com/mednche/Hate-Crime-Project/blob/master/Flowchart%20methods.png">
+</p>
 ### Notes
 Classifier.py needs to be run from a terminal so it automatically recognises the folder in which it is located.
 
