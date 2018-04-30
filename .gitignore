@@ -1,4 +1,4 @@
-# LIst files that shouldn't be included in the repository ghere
+# LIst files that shouldn't be included in the repository here
 
 # Windows file:
 Thumbs.db
@@ -7,3 +7,4 @@ Thumbs.db
 Lancashire_all_tweets.csv
 Lancashire_geotag_tweets.csv
 Lancashire_towns_tweets.csv
+classified_Lancashire_geotag_tweets.csv
