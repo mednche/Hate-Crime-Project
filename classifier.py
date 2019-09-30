@@ -2,7 +2,7 @@
 """
 Created on Mon Jun 26 16:21:29 2017
 
-@author: Natach Chenevoy
+@author: Natacha Chenevoy
 
 Python 3
 
